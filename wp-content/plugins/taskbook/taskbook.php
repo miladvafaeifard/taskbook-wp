@@ -27,3 +27,5 @@ along with Task Book. If not, see https://www.gnu.org/licenses/gpl.html.
 /**
  * Register Task post type.
  */
+
+ require_once plugin_dir_path( __FILE__) . 'includes/post-types.php';
