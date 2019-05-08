@@ -1,6 +1,10 @@
 <?php
-
-function codex_book_init() {
+/**
+ * Register a custom post type called "Task".
+ *
+ * @see get_post_type_labels() for label keys.
+ */
+function taskbook_cpt_init() {
 	$labels = array(
         'name'                  => _x( 'Tasks', 'Post type general name', 'taskbook' ),
         'singular_name'         => _x( 'Task', 'Post type singular name', 'taskbook' ),
@@ -30,24 +34,32 @@ function codex_book_init() {
 
 	$args = array(
 		'labels'             => $labels,
-		'description'        => __( 'Description.', 'your-plugin-textdomain' ),
 		'public'             => false,
 		'publicly_queryable' => false,
 		'show_ui'            => true,
 		'show_in_menu'       => true,
 		'query_var'          => true,
 		'rewrite'            => array( 'slug' => 'tasks' ),
-		'capability_type'    => 'post',
+		'capability_type'    => 'task',
 		'has_archive'        => true,
         'hierarchical'       => false,
         'show_in_rest'       => true,
-        'rest_base'          => 'tasks',      
+        'rest_base'          => 'tasks',
         'menu_position'      => null,
-        'menu_icon'          => 'dashicons-exerpt-view',
-		'supports'           => array( 'title', 'editor', 'author' )
+        'menu_icon'          => 'dashicons-excerpt-view',
+        'supports'           => array( 'title', 'editor', 'author' ),
+        'map_meta_cap'         => true,
 	);
 
 	register_post_type( 'book', $args );
 }
 
-add_action( 'init', 'codex_book_init' );
+add_action( 'init', 'taskbook_cpt_init' );
+
+/**
+ * Flush rewrite rules on activation.
+ */
+function taskbook_rewrite_flush() {
+	taskbook_cpt_init();
+	flush_rewrite_rules();
+}
